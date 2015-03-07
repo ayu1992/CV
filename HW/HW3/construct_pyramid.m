@@ -3,7 +3,6 @@ function pyramid = construct_pyramid(input_image, levels, hsize, sigma)
     hg = fspecial('gaussian', hsize, sigma);    
     img = imread(input_image);  
     for i = 1 : levels        
-        [N M] = size(img);
         imageG = conv2(img, hg, 'same');
         imageD = double(img) - imageG;
         pyramid{i} = imageD;
