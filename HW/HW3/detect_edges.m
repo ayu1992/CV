@@ -16,17 +16,13 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
     GradientX = conv2(imageG, Gx, 'same');
     GradientY = conv2(imageG, Gy, 'same');
     
-    GradientX = GradientX(4:236,4:236);
-    GradientY = GradientY(4:236,4:236);
-    N = 236 - 4 + 1;
-    M = 236 - 4 + 1;
     % strength and direction of each gradient
     G = sqrt(GradientX.^2 + GradientY.^2);     
     theta = atan2(GradientY,GradientX);           % use atan?
     figure;imshow(uint8(G));
-    max(max(theta))
+
     % round directions into 4 angles
-    k = pi/4;   % (3pi/4 )/ 3
+    k = pi/4;   
     roundedTheta = mod( round(theta./k), 4);
    
     dir0 = zeros(N,M);
@@ -42,23 +38,14 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
     
     % non-maximum suppression : sharpen edges
     Gout = zeros(N,M);
-    % direction : 90 degrees
-    G90 = G.*dir90;
-    %figure;imshow(uint8(G90));
-    G0 = G.*dir0;
-    %figure;imshow(uint8(G0));
-    G45 = G.*dir45;
-    %figure;imshow(uint8(G45));
-    G135 = G.*dir135;
-    %figure;imshow(uint8(G135));
     
-    for x = 1 : N           % for each column
-        for y = 1 : M
-            if (x + 1 <= N) && (x-1 >= 1) && (G90(x,y) > G90(x+1, y)) && (G90(x,y) > G90(x-1, y))
-                Gout(x,y) = G90(x,y);
-            end
-        end
-    end
+   
+    G0 = G.*dir0;
+    G45 = G.*dir45;
+    G90 = G.*dir90;
+    G135 = G.*dir135;
+    
+    % direction: 0 degrees
     for x = 1 : N           % for each column
         for y = 1 : M
             if (y + 1 <= M) && (y-1 >= 1) && (G0(x,y) > G0(x, y+1)) && (G0(x,y) > G0(x, y-1))
@@ -75,6 +62,16 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
             end
         end
     end
+    
+    % direction: 90 degrees
+    for x = 1 : N           % for each column
+        for y = 1 : M
+            if (x + 1 <= N) && (x-1 >= 1) && (G90(x,y) > G90(x+1, y)) && (G90(x,y) > G90(x-1, y))
+                Gout(x,y) = G90(x,y);
+            end
+        end
+    end
+    
     % direction : G135 degrees
     for x = 1 : N           % for each column
         for y = 1 : M
@@ -86,7 +83,7 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
     figure;imshow(uint8(Gout));title('non-max');
      
     % hysteresis
-    highest = max(max(G))
+    highest = max(max(Gout));
     H = Thigh * highest;
     L = H * Tlow;
     
@@ -100,22 +97,22 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
         end
     end
     
-    % BFS on strong pixels
+    % BFS on strong pixels - finds all connected edges
     
     frontier = [];
     q_hd = 1;
     q_tl = 1;
     visited = zeros(N,M);
-    n_start = size(strong,2);
+    n_start = size(strong,2);                   % all possible roots ( all strong pixels)
     
-    Gh = zeros(N,M);
+    edge_image = zeros(N,M);
     
     for i = 1 : n_start
         
         frontier = [frontier, strong(:,i)];     % push root to Q
         q_tl = q_tl + 1;                        
         visited(strong(:,i)) = 1;               % mark discovered
-        Gh(strong(:,i)) = 255;                  
+        edge_image(strong(:,i)) = 255;                  
         
         while q_hd < q_tl
             
@@ -130,7 +127,7 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
                     y = current(2)+j;
                                     
                     if x <= N && y<= M && x > 0 && y > 0 && (Gout(x , y) >= L) && (visited(x, y) == 0)
-                        Gh(x,y) = 255; 
+                        edge_image(x,y) = 255; 
                         frontier = [frontier, [x;y]];   % push to frontier
                         q_tl = q_tl + 1; 
                         visited(x,y) = 1;               % label as discovered
@@ -140,7 +137,7 @@ function edge_image = detect_edges(input_image, hsize, sigma, Thigh, Tlow)
         end
     end
     
-    figure;imshow(uint8(Gh));title('Hysteresis');
+    figure;imshow(uint8(edge_image));title('Hysteresis');
     
-%    figure;imshow(edge(input_image,'Canny'));title('Edge');
+    figure;imshow(edge(input_image,'Canny'));title('Edge');
 end
