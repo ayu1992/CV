@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,bm}
+\usepackage{amssymb}
+\usepackage{graphics}
+\usepackage{wrapfig}
+\usepackage{subfigure}
+\usepackage{array,amsfonts,amsthm,graphicx,psfrag,rotating,threeparttable,booktabs}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multirow}
+\usepackage{url}
+
+\textheight 8.8truein
+\parskip 0.1in
+\topmargin -0.8truein
+\textwidth 6.5truein
+\oddsidemargin -0.05in
+\evensidemargin -0.05in
+% \renewcommand{\baselinestretch}{1.2}   %line space adjusted here
+\setcounter{footnote}{0}
+
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\newcommand{\newsection}{\setcounter{equation}{0}\section}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\grad}{\nabla}
+\newcommand{\mc}{\mathcal}
+
+\begin{document}
+
+\title{\bf I see You (Name?) Project Proposal}
+\author{
+Karen Guo \\
+Department of Computer Science, \\
+University of Minnesota, \\
+\texttt{guoxx431@umn.edu}
+\and
+An-An Yu \\
+Department of Computer Science, \\
+University of Minnesota, \\
+\texttt{yuxx0535@umn.edu}
+}
+%\normalsize{}
+\maketitle
+%\clearpage
+%\tableofcontents
+%\clearpage
+
+%\begin{abstract}
+%Animals have a large amount of behaviors, from simple to complicated ones.
+%It's much more straightforward for human to watch animals' movements through time and describe them based on our experience. However, it's hard for computer to find out an obvious pattern of one kind of  animals' behaviors only based on the data of temporal movements.
+%Here we introduce an algorithm for transforming monkey fixation data into behavior description.
+%Specifically, we would like to find out the pattern of the data when monkeys quit their experiments.
+%We generate a large dimensional time-frequency features to describe the temporal and spatial neighborhood relation of the original fixation data. Moreover, we compare the performance of mi-SVM \cite{andrews2002svm} and EM-DD \cite{zhang2001dd} on learning the pattern to discriminate the specific behavior from a large amount of unrelated background data.
+% More to add after result coming out...
+%\end{abstract}
+
+\section{Introduction}
+In our project, we plan to apply object recognition/tracking on both image and video dataset. Furthermore, we want to combine the eye fixation data as the probability representation considering the importance of each object. Currently the rough idea is to generate a Hidden Markov Model to represent the relation between objects recognition resultsand the probability of them that are important to human eyes. (figure. \ref{HMM}) Our goal is to find if by the analysis of images and video, we can find out what is the hierarchical of objects that people focus on.\par
+Currently we find the dataset from MIT saliency benchmark \cite{mit-saliency-benchmark} to generate the basic system dealing with images and their corresponding saliency maps. We are trying to find some available video dataset that can be used in our project.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{HMM_proposal_rough.PNG}
+\caption{Rough Hidden Markov Model Assumption}
+\label{HMM}
+\end{figure}
+
+\section{Task Assignment}
+Since we only have two people in our group, and we usually meet up and discuss several times a week, currently we don't have any specific task assignment.
+Belowing is the possible task assignment in the future:
+\begin{itemize}
+	    \item Karen \\
+                  Collecting saliency map related data \\
+	              Implementation of saliency map generation
+	    \item An-An Yu \\
+	             Collecting video data \\
+	             Implementation of video information extraction
+\end{itemize}
+%    \cite{*}
+%\clearpage
+%\section{Reference}
+\bibliographystyle{plain}
+\bibliography{proprosal}
+
+\end{document}
