@@ -1,0 +1,9 @@
+"hw4.txt"
+? (aima-load 
+'all)
+> Error: Undefined function AIMA-LOAD called with arguments (ALL) .
+> While executing: CCL::TOPLEVEL-EVAL, in process listener(1).
+> Type :GO to continue, :POP to abort, :R for a list of available restarts.
+> If continued: Retry applying AIMA-LOAD to (ALL).
+> Type :? for other options.
+1 > (quit)
