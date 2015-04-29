@@ -41,7 +41,7 @@ print "build clusterFlow"
 clusterFlow = {}
 for pixel, clusterIndex in clusterId.iteritems():
 	if clusterIndex not in clusterFlow:
-		clusterFlow[clusterIndex] = np.zeros((len(rawFrames), 16)) + 10**-6
+		clusterFlow[clusterIndex] = np.zeros((len(rawFrames), 16)) + 10**-16
 	((x,y),f) = pixel
 	if f == len(rawFrames) - 1:
 		continue
@@ -187,7 +187,7 @@ for h in range(hierarchy):
 
 	# Final: display processed results
 	for f in range(len(rawFrames)):
-		imageio.imwrite('lab_flow/h='+str(1+h)+'_'+str(f)+'.png',processedFrames[f])
+		imageio.imwrite('lab_flow_golf_moving/h='+str(1+h)+'_'+str(f)+'.png',processedFrames[f])
 		if (0xFF & cv2.waitKey(5) == 27) or processedFrames[f].size == 0:
 			break
 	
