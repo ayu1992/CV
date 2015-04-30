@@ -17,7 +17,7 @@ edges = []
 # read in video file
 cam = cv2.VideoCapture("doves_8.mp4")  
 i = 0
-while i < 8:
+while i < 12:
 	ret, img = cam.read()
 	i += 1
 	if (type(img) == type(None)):
@@ -49,9 +49,22 @@ while nextframe <= len(rawInput) - 1:
 
 # print flow[0].shape # (N, M, 2)
 # flow[f][x,y] : [dx dy]
-print "length of rawFlow : ", len(flow)
+#print "length of rawFlow : ", len(flow)
+img = rawInput[0]
+[N, M, d] = img.shape
+s = []
+for f in flow:
+	for x in range(N):
+		for y in range(M):
+			abs_val = math.sqrt(f[x,y][0]**2 + f[x,y][1]**2)
+			if abs_val > 10:
+				f[x,y] /= math.sqrt(10.0 / abs_val)
+
 pickle.dump(flow, open('rawFlow.p', 'wb'))
 flow = []
+''''
+hist, bins = np.histogram(s, density=True)
+'''
 
 # CONVERT TO LAB Color Space
 print "convert to Lab space"
